@@ -3,7 +3,7 @@
 using namespace std;
 int main(){
 
-    cout<< "Ingrese dos valores";
+    cout<< "Ingrese dos valores"<< endl;
 int a1, a2;
 cin>> a1;
 cin>> a2;
@@ -12,7 +12,7 @@ if (a1<a2){
     cout<<"el menor es:" << a1;
 }
 if (a1>a2){
-    cout<<"el mayor es:" << a1;
+    cout<<"el mayor es:" << a1<< endl;
     cout<<"el menor es:" << a2;
 }
 return 0;
