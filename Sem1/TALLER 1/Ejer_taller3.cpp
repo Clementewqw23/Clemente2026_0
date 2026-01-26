@@ -19,6 +19,7 @@ int main(){
     }
     area= (D*d)/2;
     lado= sqrt(((D/2)*(D/2))+((d/2)*(d/2)));
+    perimetro=4*lado;
     cout<<"Los resultados son los siguientes:"<< endl;
     cout<<"Diagonal mayor:"<< D<< endl;
     cout<<"Diagonal menor:"<< d<< endl;
