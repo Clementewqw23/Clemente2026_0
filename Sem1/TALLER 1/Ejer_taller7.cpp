@@ -1,7 +1,7 @@
 #include<iostream>
 #include<cmath>
 using namespace std;
-int maint(){
+int main(){
 float L1, L2, L3, radio;
 float semiperimetro, area;
     cout<<"TRIANGULO CIRCUNSCRITO"<< endl;
@@ -31,3 +31,11 @@ while(radio<0){
 }
 semiperimetro=(L1+L2+L3)/2;
 area=semiperimetro*area;
+cout<<"RESULTADOS:"<< endl;
+cout<<"Lado 1:"<< L1<< endl;
+cout<<"Lado 2:"<< L2<< endl;
+cout<<"Lado 3:"<< L3<< endl;
+cout<<"radio:"<< radio<< endl;
+cout<<"Area:"<< area<< endl;
+cout<<"Semiperimetro:"<< semiperimetro<< endl;
+}

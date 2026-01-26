@@ -29,12 +29,7 @@ int main(){
         cout<< "Ingrese un numero positivo"<< endl;
         cin>> radio;
     }
-    cout<< "ingrese el area:"<< endl;
-    cin>> area;
-     while(area<=0){
-        cout<< "Ingrese un numero positivo"<< endl;
-        cin>> area;
-    }
+    
     area=(L1*L2*L3/(4*radio));
     cout<<"RESULTADOS:"<< endl;
     cout<<"Lado 1:"<< L1<< endl;
