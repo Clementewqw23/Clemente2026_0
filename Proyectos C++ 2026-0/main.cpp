@@ -1,22 +1,28 @@
 #include<iostream>
-#include"citas.h"
 #include"usuarios.h"
+#include"citas.h"
+
 
 using namespace std;
 
 int main(){
-cout<<"1. Iniciar sesion\n";
-cout<<"2. Registrar usuario\n";
-int opcionLogin;
-cin>>opcionLogin;
-cin.ignore();
+bool acceso=false;
+while(!acceso){
+    cout<<"1. Iniciar sesion\n";
+    cout<<"2. Registrar usuario\n";
+    cout<<"Seleccione una opcion: ";
+    int opcionLogin;
+    cin>>opcionLogin;
+    cin.ignore();
 
-if(opcionLogin==2){
-    registrarUsuario();
-}
+    if(opcionLogin==2){
+        registrarUsuario();
+    }
+    acceso= login();
 
-if(!login()){
-    return 0;
+    if(!acceso){
+        cout<<"Intente nuevamente. \n\n";
+    }
 }
 
     Cita* citas=nullptr;
@@ -61,6 +67,8 @@ if(!login()){
             guardarEnArchivo(citas, totalCitas);
             cout<<"Saliendo del Sistema..."<< endl;
             break;
+            default:
+            cout<<"Opcion no valida"<< endl;
         }
     } while(opcion!=5);
 

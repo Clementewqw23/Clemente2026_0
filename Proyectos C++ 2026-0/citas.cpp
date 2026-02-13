@@ -20,23 +20,32 @@ void agregarCita(Cita* &citas, int &n){
         cout<<"Motivo de cita: ";
         getline(cin, nuevo[n].problema);
         do{
-            cout<<"Fecha de la cita (DD/MM/AAAA): ";
-            getline(cin, nuevo[n].fecha);
-        }while(!validarFecha(nuevo[n].fecha));
+        cout<<"Fecha (DD/MM/AAAA): ";
+        getline(cin, nuevo[n].fecha);
 
-        do{
-            cout<<"Hora de la cita (HH:MM): ";
+        if(!validarFecha(nuevo[n].fecha)){
+            cout<<"Fecha invalida.\n";
+            continue;
+        }
+
+        cout<<"Hora (HH:MM): ";
         getline(cin, nuevo[n].hora);
-        }while(!validarHora(nuevo[n].hora));
 
-        for(int i = 0; i < n; i++){
-            if(citas[i].fecha == nuevo[n].fecha &&
-                citas[i].hora == nuevo[n].hora){
-                cout << "Ya existe una cita en esa fecha y hora.\n";
-                delete[] nuevo;
-                return;
+    if(!validarHora(nuevo[n].hora)){
+        cout<<"Hora invalida.\n";
+        continue;
     }
-}
+
+    if(!horarioDisponible(citas, n, nuevo[n].fecha, nuevo[n].hora)){
+        cout<<"Ya existe una cita en esa fecha y hora.\n";
+    }
+
+}while(
+    !validarFecha(nuevo[n].fecha) ||
+    !validarHora(nuevo[n].hora) ||
+    !horarioDisponible(citas, n, nuevo[n].fecha, nuevo[n].hora)
+);
+
         do{
              cout<<"Numero de contacto: ";
         getline(cin, nuevo[n].numero_cel);
@@ -45,6 +54,7 @@ void agregarCita(Cita* &citas, int &n){
     delete[]citas;
     citas=nuevo;
     n++;
+    ordenarCitas(citas, n);
     cout<<"Cita registrada con exito!\n";
 }
 void guardarEnArchivo(Cita* citas, int n){
@@ -180,3 +190,34 @@ void modificarCita(Cita citas[], int &n){
     }
     cout<<"No se encontro la cita.\n";
 }
+bool horarioDisponible(Cita* citas, int n, string fecha, string hora){
+    for(int i = 0; i < n; i++){
+        if(citas[i].fecha == fecha && citas[i].hora == hora){
+            return false;
+        }
+    }
+    return true;
+}
+bool esPosterior(Cita a, Cita b){
+    // Convertimos fecha a AAAAMMDD
+    string fa = a.fecha.substr(6,4) + a.fecha.substr(3,2) + a.fecha.substr(0,2);
+    string fb = b.fecha.substr(6,4) + b.fecha.substr(3,2) + b.fecha.substr(0,2);
+
+    if(fa > fb) return true;
+    if(fa < fb) return false;
+
+    // Si la fecha es igual, comparamos hora
+    return a.hora > b.hora;
+}
+void ordenarCitas(Cita* citas, int n){
+    for(int i = 0; i < n-1; i++){
+        for(int j = 0; j < n-1-i; j++){
+            if(esPosterior(citas[j], citas[j+1])){
+                Cita temp = citas[j];
+                citas[j] = citas[j+1];
+                citas[j+1] = temp;
+            }
+        }
+    }
+}
+

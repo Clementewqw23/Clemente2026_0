@@ -19,4 +19,8 @@ void load_archivo(Cita* &citas, int &n);
 void mostrarCita(const Cita & c);
 void buscarPorNombre(Cita citas[], int n);
 void modificarCita(Cita citas[], int &n);
+bool horarioDisponible(Cita* citas, int n, string fecha, string hora);
+void ordenarCitas(Cita* citas, int n);
+
+
 #endif

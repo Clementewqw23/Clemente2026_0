@@ -6,10 +6,8 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "main.cpp",
-                "citas.cpp",
-                "usuarios.cpp",
-                "validaciones.cpp",
+                "main_Biblioteca.cpp",
+                "biblioteca.cpp",
                 "-o",
                 "sistema"
             ],
