@@ -46,10 +46,13 @@ void agregarCita(Cita* &citas, int &n){
     !horarioDisponible(citas, n, nuevo[n].fecha, nuevo[n].hora)
 );
 
+    
         do{
              cout<<"Numero de contacto: ";
         getline(cin, nuevo[n].numero_cel);
         }while(!validarTelefono(nuevo[n].numero_cel));
+
+        nuevo[n].estado = "Pendiente";
        
     delete[]citas;
     citas=nuevo;
@@ -73,6 +76,7 @@ void guardarEnArchivo(Cita* citas, int n){
         archivo << citas[i].fecha << endl;
         archivo << citas[i].hora << endl;
         archivo << citas[i].numero_cel << endl;
+        archivo << citas[i].estado << endl;
     }
 
     archivo.close();
@@ -94,6 +98,7 @@ void load_archivo(Cita* &citas, int &n){
         getline(archivo, temp.fecha);
         getline(archivo, temp.hora);
         getline(archivo, temp.numero_cel);
+        getline(archivo, temp.estado);
 
         Cita* nuevo = new Cita[n+1];
 
@@ -117,6 +122,7 @@ void mostrarCita(const Cita & c){
     cout<<"Fecha"<< c.fecha<<" Hora:"<< c.hora<< endl;
     cout<<"Contacto:"<< c.numero_cel << endl;
     cout<<"Motivo de la cita:"<< c.problema << endl;
+    cout<<"Estado de la cita: "<< c.estado << endl;
     cout<<"--------------------------"<< endl;
 }
 void buscarPorNombre(Cita citas[], int n){
@@ -134,6 +140,7 @@ void buscarPorNombre(Cita citas[], int n){
             cout<<"\n Hora de la cita: "<<citas[i].hora;
             cout<<"\n Contacto: "<<citas[i].numero_cel;
             cout<<"\n Motivo de la cita: "<<citas[i].problema;
+            cout<<"\n Estado de la cita: "<<citas[i].estado<<endl;  
             return;
         }
     }
@@ -148,31 +155,103 @@ void modificarCita(Cita citas[], int &n){
         if(citas[i].nombreCliente==nombreCliente){
             int opcionMod;
 
-           cout<<"\nCita encontrada. Ingrese los nuevos datos:\n";
+           cout<<"\nCita encontrada.\n";
             mostrarCita(citas[i]);
             cout<<"\n¿Que desea modificar?\n";
             cout<<"1. Fecha\n";
             cout<<"2. Hora\n";
             cout<<"3. Numero de contacto\n";
-            cout<<"4. Eliminar cita\n";
+            cout<<"4. Estado de la cita\n";
+            cout<<"5. Eliminar cita\n";
             cout<<"Seleccione opcion: ";
             cin>>opcionMod;
             cin.ignore();
 
             switch(opcionMod){
-                case 1:
-                    cout<<"Nueva fecha(DD/MM/AAAA): ";
-                    getline(cin, citas[i].fecha);
+                case 1: {
+                     string nuevaFecha;
+                    do{
+                        cout << "Nueva fecha (DD/MM/AAAA): ";
+                        getline(cin, nuevaFecha);
+
+                        if(!validarFecha(nuevaFecha)){
+                            cout << "Fecha invalida.\n";
+                            continue;
+                        }
+                        if(!horarioDisponible(citas, n, nuevaFecha, citas[i].hora)){
+                            cout << "Ya existe una cita en esa fecha y hora.\n";
+                            continue;
+                        }
+
+                        citas[i].fecha = nuevaFecha;
+
+                        break;
+                    }while(true);
+
                     break;
-                case 2:
-                    cout<<"Nueva hora (HH:MM): ";
-                    getline(cin, citas[i].hora);
+                }
+                case 2: {
+                    string nuevaHora;
+                    do{
+                        cout << "Nueva hora (HH:MM): ";
+                        getline(cin, nuevaHora);
+
+                        if(!validarHora(nuevaHora)){
+                            cout << "Hora invalida.\n";
+                            continue;
+                        }
+
+                        if(!horarioDisponible(citas, n, citas[i].fecha, nuevaHora)){
+                            cout << "Ya existe una cita en esa fecha y hora.\n";
+                            continue;
+                        }
+
+                        citas[i].hora = nuevaHora;
+                        break;
+
+                    }while(true);
+
                     break;
-                case 3:
-                    cout<<"Nuevo numero de contacto: ";
-                    getline(cin, citas[i].numero_cel);
-                    break;
-                case 4:
+                }
+                    case 3: {
+                        string nuevoNumero;
+                        do{
+                            cout << "Nuevo numero de contacto: ";
+                            getline(cin, nuevoNumero);
+
+                            if(nuevoNumero.length() < 9){
+                                cout << "Numero invalido.\n";
+                                continue;
+                            }
+
+                            citas[i].numero_cel = nuevoNumero;
+                            break;
+
+                        }while(true);
+
+                        break;
+                    }
+
+                    case 4: {
+                        string nuevoEstado;
+                        do{
+                            cout << "Nuevo estado (Atendido/Cancelado): ";
+                            getline(cin, nuevoEstado);
+
+                            if(nuevoEstado!= "Atendido" && nuevoEstado != "Cancelado"){
+                                cout << "Estado invalido.\n";
+                                continue;
+                            }
+
+                            citas[i].estado = nuevoEstado;
+                            break;
+
+                        }while(true);
+
+                        cout<<"Estado actualizado con exito.\n";
+                        break;
+                    }
+                case 5:
                     for(int j=i; j<n-1; j++){
                         citas[j]=citas[j+1];
                     }

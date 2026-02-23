@@ -11,6 +11,7 @@ struct Cita{
     string hora;
     string numero_cel;
     string problema;
+    string estado;
 };
 
 void agregarCita(Cita* &citas, int &n);
